@@ -29,7 +29,8 @@ function calculatePrice() {
             if (squareFootage < 1000) basePrice = 250;
             else if (squareFootage <= 2000) basePrice = 500;
             else if (squareFootage <= 3000) basePrice = 800;
-            else basePrice = 1500;
+            else if (squareFootage <= 4000) basePrice = 1500; // Adjusted for homes between 3000-4000 sq ft
+            else basePrice = 2000; // For homes larger than 4000 sq ft
             break;
         case "airbnb":
             if (squareFootage < 1000) basePrice = 100;
@@ -42,7 +43,8 @@ function calculatePrice() {
             if (squareFootage < 1000) basePrice = 250;
             else if (squareFootage <= 2000) basePrice = 300;
             else if (squareFootage <= 3000) basePrice = 400;
-            else basePrice = 500;
+            else if (squareFootage <= 4000) basePrice = 500; // Adjusted for homes between 3000-4000 sq ft
+            else basePrice = 650; // For homes larger than 4000 sq ft
             break;
         case "commercial":
             helperCost = helpers * 75; // Helpers paid $75 per day for commercial cleaning
@@ -84,5 +86,4 @@ function calculatePrice() {
 
     document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
 }
-
 
