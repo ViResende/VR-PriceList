@@ -24,7 +24,7 @@
         /* Centered title styling */
         h1 {
             text-align: center;
-            color: #4CAF50; /* Change this to match the color in your logo */
+            color: #40E0D0; /* Turquoise Blue */
             margin-bottom: 30px;
         }
 
@@ -60,7 +60,7 @@
 
         button {
             width: 100%;
-            background-color: #4CAF50; /* Change this to match the color in your logo */
+            background-color: #40E0D0; /* Turquoise Blue */
             color: white;
             padding: 10px;
             border: none;
@@ -70,7 +70,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #20B2AA; /* Darker Turquoise */
         }
 
         h2 {
@@ -80,14 +80,14 @@
 
         .total-price {
             font-size: 24px;
-            color: #4CAF50; /* Change this to match the color in your logo */
+            color: #40E0D0; /* Turquoise Blue */
             font-weight: bold;
         }
     </style>
 </head>
 <body>
     <!-- Logo Image -->
-    <img src="logoVR.png" alt="Company Logo" class="logo">
+    <img src="logo.png" alt="Company Logo" class="logo">
 
     <!-- Title -->
     <h1>Cleaning Service Price Calculator</h1>
@@ -144,67 +144,8 @@
     <!-- Display Total Price -->
     <h2>Total Price: <span id="totalPrice" class="total-price">$0</span></h2>
 
-    <!-- Script for Calculating Price -->
-    <script>
-        function calculatePrice() {
-            let serviceType = document.getElementById("serviceType").value;
-            let squareFootage = parseInt(document.getElementById("squareFootage").value);
-            let frequency = document.getElementById("frequency").value;
-            let helpers = parseInt(document.getElementById("helpers").value);
-            let estimatedHours = parseFloat(document.getElementById("estimatedHours").value);
-            let addons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(el => el.value);
-
-            let basePrice = 0;
-            let hourlyRate = 0;
-            let addonCost = 0;
-            let helperCost = 0;
-
-            // Calculate base price based on service type and square footage
-            if (serviceType === "standard") {
-                if (squareFootage < 1000) basePrice = 130;
-                else if (squareFootage <= 2000) basePrice = 150;
-                else if (squareFootage <= 3000) basePrice = 200;
-                else basePrice = 250;
-
-                if (frequency === "biweekly") hourlyRate = 60;
-                else if (frequency === "monthly") hourlyRate = 70;
-                else hourlyRate = 80;
-
-                // Calculate helpers' cost
-                helperCost = helpers * 60; // Helpers are paid $60 per house for standard cleaning
-            } else if (serviceType === "deep") {
-                if (squareFootage < 1000) basePrice = 200;
-                else if (squareFootage <= 2000) basePrice = 250;
-                else if (squareFootage <= 3000) basePrice = 350;
-                else basePrice = 450;
-
-                hourlyRate = 95;
-
-                // Calculate helpers' cost
-                helperCost = helpers * 120; // Helpers are paid $120 per house for deep cleaning
-            }
-
-            // Calculate add-on costs
-            addons.forEach(addon => {
-                switch (addon) {
-                    case "fridge": addonCost += 35; break;
-                    case "oven": addonCost += 45; break;
-                    case "laundry_fold": addonCost += 20; break;
-                    case "laundry_wash": addonCost += 30; break;
-                    case "garage": addonCost += 50; break;
-                    case "porch": addonCost += 20; break;
-                    case "sunroom": addonCost += 30; break;
-                    case "dishes": addonCost += 10; break;
-                    case "windows": addonCost += 4; break;
-                }
-            });
-
-            // Calculate the final price considering the estimated hours
-            let timeAdjustedPrice = basePrice + (hourlyRate * estimatedHours);
-            let totalPrice = timeAdjustedPrice + addonCost + helperCost;
-
-            document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
-        }
-    </script>
+    <!-- Link to External JavaScript File -->
+    <script src="script.js"></script>
 </body>
 </html>
+
