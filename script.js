@@ -15,20 +15,20 @@ function calculatePrice() {
     switch (serviceType) {
         case "standard":
             hourlyRate = 70;
-            helperCost = helpers * 60; // Helpers paid $60 per day for standard cleaning
+            helperCost = helpers * 65; // Helpers paid $65 per day for standard cleaning
             break;
         case "deep":
             hourlyRate = 90;
             helperCost = helpers * 120; // Helpers paid $120 per day for deep cleaning
             break;
         case "post_construction":
-            helperCost = helpers * 150; // Helpers paid $150 per day for post-construction
+            helperCost = helpers * 175; // Helpers paid $175 per day for post-construction
             hourlyRate = 90;
 
-            if (squareFootage < 1000) basePrice = 200;
+            if (squareFootage < 1000) basePrice = 250;
             else if (squareFootage <= 2000) basePrice = 500;
             else if (squareFootage <= 3000) basePrice = 800;
-            else basePrice = 1200;
+            else basePrice = 1500;
             break;
         case "airbnb":
             if (squareFootage < 1000) basePrice = 100;
@@ -44,7 +44,7 @@ function calculatePrice() {
             else basePrice = 500;
             break;
         case "commercial":
-            helperCost = helpers * 60; // Helpers paid $60 per day for commercial cleaning
+            helperCost = helpers * 75; // Helpers paid $75 per day for commercial cleaning
             hourlyRate = 75;
             
             if (squareFootage <= 2000) basePrice = 200;
@@ -77,4 +77,5 @@ function calculatePrice() {
 
     document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
 }
+
 
