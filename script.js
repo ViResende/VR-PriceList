@@ -17,17 +17,26 @@ function calculatePrice() {
         case "standard":
             hourlyRate = 70;
             helperCost = helpers * 65; // Helpers paid $65 per day for standard cleaning
-            basePrice = squareFootage > 4000 ? 600 : 500; // Adjusted for larger size
+
+            if (squareFootage >= 3500 && squareFootage <= 4700) {
+                basePrice = 540; // Adjusted base price for houses between 3500-4700 sq ft
+            }
             break;
         case "deep":
             hourlyRate = 90;
             helperCost = helpers * 120; // Helpers paid $120 per day for deep cleaning
-            basePrice = squareFootage > 4000 ? 950 : 750; // Adjusted for larger size
+
+            if (squareFootage >= 3500 && squareFootage <= 4700) {
+                basePrice = 800; // Adjusted base price for houses between 3500-4700 sq ft
+            }
             break;
         case "post_construction":
             helperCost = helpers * 175; // Helpers paid $175 per day for post-construction
             hourlyRate = 90;
-            basePrice = squareFootage > 4000 ? 2000 : 1500; // Adjusted for larger size
+
+            if (squareFootage >= 3500 && squareFootage <= 4700) {
+                basePrice = 1200; // Adjusted base price for houses between 3500-4700 sq ft
+            }
             break;
         case "airbnb":
             if (squareFootage < 1000) basePrice = 100;
@@ -37,12 +46,17 @@ function calculatePrice() {
             addonCost += addons.includes("restocking") ? 20 : 0;
             break;
         case "move_in_out":
-            basePrice = squareFootage > 4000 ? 700 : 500; // Adjusted for larger size
+            if (squareFootage >= 3500 && squareFootage <= 4700) {
+                basePrice = 600; // Adjusted base price for houses between 3500-4700 sq ft
+            }
             break;
         case "commercial":
             helperCost = helpers * 75; // Helpers paid $75 per day for commercial cleaning
             hourlyRate = 75;
-            basePrice = squareFootage > 4000 ? 1200 : 800; // Adjusted for larger size
+            
+            if (squareFootage >= 3500 && squareFootage <= 4700) {
+                basePrice = 1000; // Adjusted base price for commercial spaces between 3500-4700 sq ft
+            }
             break;
         default:
             break;
@@ -76,5 +90,4 @@ function calculatePrice() {
 
     document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
 }
-
 
