@@ -10,6 +10,7 @@ function calculatePrice() {
     let hourlyRate = 0;
     let addonCost = 0;
     let helperCost = 0;
+    let discount = 0;
 
     // Calculate base price and helper costs based on service type and size
     switch (serviceType) {
@@ -74,6 +75,12 @@ function calculatePrice() {
     // Calculate the final price considering the base rate, hourly rate, and addons
     let timeAdjustedPrice = basePrice + (hourlyRate * estimatedHours);
     let totalPrice = timeAdjustedPrice + addonCost + helperCost;
+
+    // Apply a 10% discount if the client chooses biweekly service
+    if (frequency === "biweekly") {
+        discount = totalPrice * 0.10;
+        totalPrice = totalPrice - discount;
+    }
 
     document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
 }
