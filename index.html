@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleaning Service Price Calculator</title>
+</head>
+<body>
+    <h1>Cleaning Service Price Calculator</h1>
+    <form id="priceForm">
+        <label for="serviceType">Service Type:</label>
+        <select id="serviceType" name="serviceType">
+            <option value="standard">Standard Cleaning</option>
+            <option value="deep">Deep Cleaning</option>
+            <option value="post_construction">Post-Construction Cleaning</option>
+            <option value="airbnb">Airbnb Cleaning</option>
+            <option value="move_in_out">Move-In/Move-Out Cleaning</option>
+            <option value="commercial">Commercial Cleaning</option>
+        </select><br>
+
+        <label for="squareFootage">Square Footage:</label>
+        <input type="number" id="squareFootage" name="squareFootage"><br>
+
+        <label for="frequency">Frequency:</label>
+        <select id="frequency" name="frequency">
+            <option value="biweekly">Biweekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="one_time">One-Time</option>
+        </select><br>
+
+        <label for="addons">Add-Ons (select all that apply):</label><br>
+        <input type="checkbox" name="addons" value="fridge"> Fridge (interior)<br>
+        <input type="checkbox" name="addons" value="oven"> Oven<br>
+        <input type="checkbox" name="addons" value="laundry_fold"> Laundry (fold only)<br>
+        <input type="checkbox" name="addons" value="laundry_wash"> Laundry (wash & fold)<br>
+        <input type="checkbox" name="addons" value="garage"> Garage<br>
+        <input type="checkbox" name="addons" value="porch"> Porch<br>
+        <input type="checkbox" name="addons" value="sunroom"> Sunroom<br>
+        <input type="checkbox" name="addons" value="dishes"> Dishes (hand wash)<br>
+        <input type="checkbox" name="addons" value="windows"> Windows (interior only)<br>
+
+        <button type="button" onclick="calculatePrice()">Calculate</button>
+    </form>
+    <h2>Total Price: <span id="totalPrice">$0</span></h2>
+
+    <script src="script.js"></script>
+</body>
+</html>
