@@ -17,20 +17,17 @@ function calculatePrice() {
         case "standard":
             hourlyRate = 70;
             helperCost = helpers * 65; // Helpers paid $65 per day for standard cleaning
+            basePrice = squareFootage > 4000 ? 600 : 500; // Adjusted for larger size
             break;
         case "deep":
             hourlyRate = 90;
             helperCost = helpers * 120; // Helpers paid $120 per day for deep cleaning
+            basePrice = squareFootage > 4000 ? 950 : 750; // Adjusted for larger size
             break;
         case "post_construction":
             helperCost = helpers * 175; // Helpers paid $175 per day for post-construction
             hourlyRate = 90;
-
-            if (squareFootage < 1000) basePrice = 250;
-            else if (squareFootage <= 2000) basePrice = 500;
-            else if (squareFootage <= 3000) basePrice = 800;
-            else if (squareFootage <= 4000) basePrice = 1500; // Adjusted for homes between 3000-4000 sq ft
-            else basePrice = 2000; // For homes larger than 4000 sq ft
+            basePrice = squareFootage > 4000 ? 2000 : 1500; // Adjusted for larger size
             break;
         case "airbnb":
             if (squareFootage < 1000) basePrice = 100;
@@ -40,19 +37,12 @@ function calculatePrice() {
             addonCost += addons.includes("restocking") ? 20 : 0;
             break;
         case "move_in_out":
-            if (squareFootage < 1000) basePrice = 250;
-            else if (squareFootage <= 2000) basePrice = 300;
-            else if (squareFootage <= 3000) basePrice = 400;
-            else if (squareFootage <= 4000) basePrice = 500; // Adjusted for homes between 3000-4000 sq ft
-            else basePrice = 650; // For homes larger than 4000 sq ft
+            basePrice = squareFootage > 4000 ? 700 : 500; // Adjusted for larger size
             break;
         case "commercial":
             helperCost = helpers * 75; // Helpers paid $75 per day for commercial cleaning
             hourlyRate = 75;
-            
-            if (squareFootage <= 2000) basePrice = 200;
-            else if (squareFootage <= 5000) basePrice = 400;
-            else basePrice = 800;
+            basePrice = squareFootage > 4000 ? 1200 : 800; // Adjusted for larger size
             break;
         default:
             break;
@@ -86,4 +76,5 @@ function calculatePrice() {
 
     document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
 }
+
 
