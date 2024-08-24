@@ -2,8 +2,8 @@ function calculatePrice() {
     let serviceType = document.getElementById("serviceType").value;
     let squareFootage = parseInt(document.getElementById("squareFootage").value);
     let frequency = document.getElementById("frequency").value;
-    let helpers = parseInt(document.getElementById("helpers").value); // Number of helpers
-    let estimatedHours = parseFloat(document.getElementById("estimatedHours").value); // Estimated hours to complete the job
+    let helpers = parseInt(document.getElementById("helpers").value);
+    let estimatedHours = parseFloat(document.getElementById("estimatedHours").value);
     let addons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(el => el.value);
 
     let basePrice = 0;
@@ -11,33 +11,38 @@ function calculatePrice() {
     let addonCost = 0;
     let helperCost = 0;
 
-    // Calculate base price based on service type and square footage
+    // Calculate base price and hourly rate based on service type
     if (serviceType === "standard") {
-        if (squareFootage < 1000) basePrice = 130;
-        else if (squareFootage <= 2000) basePrice = 150;
-        else if (squareFootage <= 3000) basePrice = 200;
-        else basePrice = 250;
-
-        if (frequency === "biweekly") hourlyRate = 60;
-        else if (frequency === "monthly") hourlyRate = 70;
-        else hourlyRate = 80;
-
-        // Calculate helpers' cost
-        helperCost = helpers * 60; // Helpers are paid $60 per house for standard cleaning
+        hourlyRate = 70;
+        helperCost = helpers * 60; // Helpers are paid $60 per day for standard cleaning
     } else if (serviceType === "deep") {
-        if (squareFootage < 1000) basePrice = 200;
-        else if (squareFootage <= 2000) basePrice = 250;
-        else if (squareFootage <= 3000) basePrice = 350;
-        else basePrice = 450;
-
-        hourlyRate = 95;
-
-        // Calculate helpers' cost
-        helperCost = helpers * 120; // Helpers are paid $120 per house for deep cleaning
+        hourlyRate = 90;
+        helperCost = helpers * 120; // Helpers are paid $120 per day for deep cleaning
+    } else if (serviceType === "commercial") {
+        hourlyRate = 75;
+        helperCost = helpers * 60; // Helpers are paid $60 per day for commercial cleaning
+    } else if (frequency === "monthly") {
+        hourlyRate = 80;
     }
-    // Add other service types...
 
     // Calculate add-on costs
     addons.forEach(addon => {
         switch (addon) {
-            case "fridge": addonCost += 35; break
+            case "fridge": addonCost += 35; break;
+            case "oven": addonCost += 45; break;
+            case "laundry_fold": addonCost += 20; break;
+            case "laundry_wash": addonCost += 30; break;
+            case "garage": addonCost += 50; break;
+            case "porch": addonCost += 20; break;
+            case "sunroom": addonCost += 30; break;
+            case "dishes": addonCost += 10; break;
+            case "windows": addonCost += 4; break;
+        }
+    });
+
+    // Calculate the final price considering the estimated hours
+    let timeAdjustedPrice = hourlyRate * estimatedHours;
+    let totalPrice = timeAdjustedPrice + addonCost + helperCost;
+
+    document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
+}
