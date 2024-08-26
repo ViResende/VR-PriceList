@@ -1,93 +1,95 @@
-function calculatePrice() {
-    let serviceType = document.getElementById("serviceType").value;
-    let squareFootage = parseInt(document.getElementById("squareFootage").value);
-    let frequency = document.getElementById("frequency").value;
-    let helpers = parseInt(document.getElementById("helpers").value);
-    let estimatedHours = parseFloat(document.getElementById("estimatedHours").value);
-    let addons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(el => el.value);
-
-    let basePrice = 0;
+function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, frequency) {
     let hourlyRate = 0;
-    let addonCost = 0;
+    let basePrice = 0;
     let helperCost = 0;
+    let totalPrice = 0;
     let discount = 0;
 
-    // Calculate base price and helper costs based on service type and size
     switch (serviceType) {
-        case "standard":
-            hourlyRate = 70;
-            helperCost = helpers * 65; // Helpers paid $65 per day for standard cleaning
-
-            if (squareFootage >= 3500 && squareFootage <= 4700) {
-                basePrice = 540; // Adjusted base price for houses between 3500-4700 sq ft
-            }
-            break;
         case "deep":
             hourlyRate = 90;
-            helperCost = helpers * 120; // Helpers paid $120 per day for deep cleaning
+            helperCost = helpers * 130; // Helpers paid $130 per day for deep cleaning
 
-            if (squareFootage >= 3500 && squareFootage <= 4700) {
-                basePrice = 800; // Adjusted base price for houses between 3500-4700 sq ft
+            if (squareFootage < 1000) {
+                basePrice = 200 + Math.min((estimatedHours - (200 / hourlyRate)) * hourlyRate, 250 - 200);
+            } else if (squareFootage >= 1000 && squareFootage < 2000) {
+                basePrice = 250 + Math.min((estimatedHours - (250 / hourlyRate)) * hourlyRate, 350 - 250);
+            } else if (squareFootage >= 2000 && squareFootage < 3000) {
+                basePrice = 350 + Math.min((estimatedHours - (350 / hourlyRate)) * hourlyRate, 450 - 350);
+            } else if (squareFootage >= 3000) {
+                basePrice = 450 + Math.min((estimatedHours - (450 / hourlyRate)) * hourlyRate, 550 - 450);
             }
+            totalPrice = basePrice + helperCost;
             break;
+
         case "post_construction":
-            helperCost = helpers * 175; // Helpers paid $175 per day for post-construction
-            hourlyRate = 90;
+            hourlyRate = 95;
+            helperCost = helpers * 180; // Helpers paid $180 per day for post-construction cleaning
 
-            if (squareFootage >= 3500 && squareFootage <= 4700) {
-                basePrice = 1200; // Adjusted base price for houses between 3500-4700 sq ft
+            if (squareFootage < 1000) {
+                basePrice = 200 + Math.min((estimatedHours - (200 / hourlyRate)) * hourlyRate, 300 - 200);
+            } else if (squareFootage >= 1000 && squareFootage < 2000) {
+                basePrice = 500 + Math.min((estimatedHours - (500 / hourlyRate)) * hourlyRate, 700 - 500);
+            } else if (squareFootage >= 2000) {
+                basePrice = 800 + Math.min((estimatedHours - (800 / hourlyRate)) * hourlyRate, 1200 - 800);
             }
+            totalPrice = basePrice + helperCost;
             break;
-        case "airbnb":
-            if (squareFootage < 1000) basePrice = 100;
-            else if (squareFootage <= 2000) basePrice = 150;
-            else basePrice = 200;
-            addonCost += addons.includes("laundry") ? 20 : 0;
-            addonCost += addons.includes("restocking") ? 20 : 0;
-            break;
+
         case "move_in_out":
-            if (squareFootage >= 3500 && squareFootage <= 4700) {
-                basePrice = 600; // Adjusted base price for houses between 3500-4700 sq ft
+            hourlyRate = 85;
+            helperCost = helpers * 150; // Helpers paid $150 per job
+
+            if (squareFootage < 1000) {
+                basePrice = 250 + Math.min((estimatedHours - (250 / hourlyRate)) * hourlyRate, 300 - 250);
+            } else if (squareFootage >= 1000 && squareFootage < 2000) {
+                basePrice = 300 + Math.min((estimatedHours - (300 / hourlyRate)) * hourlyRate, 400 - 300);
+            } else if (squareFootage >= 2000 && squareFootage < 3000) {
+                basePrice = 400 + Math.min((estimatedHours - (400 / hourlyRate)) * hourlyRate, 500 - 400);
+            } else if (squareFootage >= 3000) {
+                basePrice = 500 + Math.min((estimatedHours - (500 / hourlyRate)) * hourlyRate, 650 - 500);
             }
+            totalPrice = basePrice + helperCost;
             break;
-        case "commercial":
-            helperCost = helpers * 75; // Helpers paid $75 per day for commercial cleaning
-            hourlyRate = 75;
-            
-            if (squareFootage >= 3500 && squareFootage <= 4700) {
-                basePrice = 1000; // Adjusted base price for commercial spaces between 3500-4700 sq ft
+
+        case "standard":
+            hourlyRate = 70;
+            helperCost = helpers * 60; // Helpers paid $60 per job
+
+            if (squareFootage < 1000) {
+                basePrice = 130 + Math.min((estimatedHours - (130 / hourlyRate)) * hourlyRate, 150 - 130);
+            } else if (squareFootage >= 1000 && squareFootage < 2000) {
+                basePrice = 150 + Math.min((estimatedHours - (150 / hourlyRate)) * hourlyRate, 200 - 150);
+            } else if (squareFootage >= 2000 && squareFootage < 3000) {
+                basePrice = 200 + Math.min((estimatedHours - (200 / hourlyRate)) * hourlyRate, 250 - 200);
+            } else if (squareFootage >= 3000) {
+                basePrice = 250 + Math.min((estimatedHours - (250 / hourlyRate)) * hourlyRate, 300 - 250);
             }
+            totalPrice = basePrice + helperCost;
             break;
+
         default:
-            break;
+            console.log("Invalid service type");
+            return;
     }
 
-    // Calculate add-on costs
-    addons.forEach(addon => {
-        switch (addon) {
-            case "fridge": addonCost += 35; break;
-            case "oven": addonCost += 45; break;
-            case "laundry_fold": addonCost += 20; break;
-            case "laundry_wash": addonCost += 30; break;
-            case "garage": addonCost += 50; break;
-            case "porch": addonCost += 20; break;
-            case "sunroom": addonCost += 30; break;
-            case "dishes": addonCost += 10; break;
-            case "windows": addonCost += 4; break;
-            case "restocking": addonCost += 20; break;
-        }
-    });
-
-    // Calculate the final price considering the base rate, hourly rate, and addons
-    let timeAdjustedPrice = basePrice + (hourlyRate * estimatedHours);
-    let totalPrice = timeAdjustedPrice + addonCost + helperCost;
-
-    // Apply a 10% discount if the client chooses biweekly service
+    // Apply discount for bi-weekly service
     if (frequency === "biweekly") {
         discount = totalPrice * 0.10;
-        totalPrice = totalPrice - discount;
+        totalPrice -= discount;
+    } else if (frequency === "one_time") {
+        totalPrice += 15; // Add $15 for one-time clean
     }
 
-    document.getElementById("totalPrice").innerText = `$${totalPrice.toFixed(2)}`;
+    return totalPrice;
 }
 
+// Example usage:
+let serviceType = "deep";
+let squareFootage = 1500;
+let estimatedHours = 5;
+let helpers = 1;
+let frequency = "biweekly";
+
+let finalPrice = calculatePrice(serviceType, squareFootage, estimatedHours, helpers, frequency);
+console.log("Total Price:", finalPrice);
