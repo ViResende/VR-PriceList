@@ -1,16 +1,44 @@
 function calculatePrice() {
-    const serviceType = document.getElementById('serviceType').value;
-    const squareFootage = parseFloat(document.getElementById('squareFootage').value);
-    const frequency = document.getElementById('frequency').value;
-    const helpers = parseInt(document.getElementById('helpers').value, 10);
-    const estimatedHours = parseFloat(document.getElementById('estimatedHours').value);
+    // Get form values
+    const serviceType = document.getElementById("serviceType").value;
+    const squareFootage = parseFloat(document.getElementById("squareFootage").value);
+    const frequency = document.getElementById("frequency").value;
+    const helpers = parseInt(document.getElementById("helpers").value) || 0;
+    const estimatedHours = parseFloat(document.getElementById("estimatedHours").value) || 0;
 
-    const addons = document.querySelectorAll('input[name="addons"]:checked');
-    let addonCost = 0;
-    
+    // Base prices and rates
+    let basePrice = 0;
+    let ownerRate = 0;
+    let helperRate = 0;
+
+    switch (serviceType) {
+        case "standard":
+            basePrice = getStandardBasePrice(squareFootage);
+            ownerRate = 70;
+            helperRate = 50;
+            break;
+        case "deep":
+            basePrice = getDeepBasePrice(squareFootage);
+            ownerRate = 90;
+            helperRate = 120;
+            break;
+        case "move_in_out":
+            basePrice = getMoveInOutBasePrice(squareFootage);
+            ownerRate = 85;
+            helperRate = 120;
+            break;
+        case "commercial":
+            basePrice = getCommercialBasePrice(squareFootage);
+            ownerRate = 75;
+            helperRate = 60;
+            break;
+    }
+
     // Calculate add-on costs
+    const addons = Array.from(document.querySelectorAll('input[name="addons"]:checked')).map(checkbox => checkbox.value);
+    let addonCost = 0;
     addons.forEach(addon => {
-        switch (addon.value) {
+        switch (addon) {
             case "fridge": addonCost += 35; break;
             case "oven": addonCost += 45; break;
             case "laundry_fold": addonCost += 20; break;
@@ -24,55 +52,44 @@ function calculatePrice() {
         }
     });
 
-    let basePrice = 0;
-    let ownerRate = 0;
-    let helperRate = 0;
+    // Calculate total cost
+    let totalCost = basePrice + (ownerRate * estimatedHours) + (helperRate * helpers) + addonCost;
 
-    // Base price, owner rate, and helper rate calculation based on service type
-    switch (serviceType) {
-        case 'standard':
-            basePrice = 540; // Base price for 3,500 - 4,700 sq ft
-            ownerRate = 70; // Owner's hourly rate
-            helperRate = 65; // Helper's daily rate
-            break;
-        case 'deep':
-            basePrice = 800; // Base price for 3,500 - 4,700 sq ft
-            ownerRate = 90; // Owner's hourly rate
-            helperRate = 120; // Helper's daily rate
-            break;
-        case 'post_construction':
-            basePrice = 1200; // Base price for 3,500 - 4,700 sq ft
-            ownerRate = 90; // Owner's hourly rate
-            helperRate = 175; // Helper's daily rate
-            break;
-        case 'move_in_out':
-            basePrice = 600; // Base price for 3,500 - 4,700 sq ft
-            ownerRate = 85; // Owner's hourly rate (adjusted)
-            helperRate = 85; // Helper's daily rate (adjusted)
-            break;
-        case 'commercial':
-            basePrice = 1000; // Base price for 3,500 - 4,700 sq ft
-            ownerRate = 75; // Owner's hourly rate
-            helperRate = 75; // Helper's daily rate
-            break;
+    // Apply discounts
+    if (frequency === "biweekly") {
+        totalCost *= 0.90; // 10% discount
+    } else if (frequency === "one_time") {
+        totalCost += 15;
     }
 
-    // Calculate the total helper cost
-    const helperCost = helpers * helperRate;
+    // Display total price
+    document.getElementById("totalPrice").textContent = `$${totalCost.toFixed(2)}`;
+}
 
-    // Calculate the total owner cost based on estimated hours
-    const ownerCost = estimatedHours * ownerRate;
+// Base price functions
+function getStandardBasePrice(sqft) {
+    if (sqft < 1000) return 130;
+    if (sqft <= 2000) return 150;
+    if (sqft <= 3000) return 200;
+    return 250;
+}
 
-    // Calculate the total price before applying discounts or additional fees
-    let totalPrice = basePrice + ownerCost + helperCost + addonCost;
+function getDeepBasePrice(sqft) {
+    if (sqft < 1000) return 200;
+    if (sqft <= 2000) return 250;
+    if (sqft <= 3000) return 350;
+    return 450;
+}
 
-    // Apply frequency-based adjustments
-    if (frequency === 'biweekly') {
-        totalPrice *= 0.9; // Apply 10% discount for biweekly services
-    } else if (frequency === 'one_time') {
-        totalPrice += 15; // Apply $15 additional fee for one-time cleaning
-    }
+function getMoveInOutBasePrice(sqft) {
+    if (sqft < 1000) return 250;
+    if (sqft <= 2000) return 300;
+    if (sqft <= 3000) return 400;
+    return 500;
+}
 
-    // Display the total price
-    document.getElementById('totalPrice').textContent = `$${totalPrice.toFixed(2)}`;
+function getCommercialBasePrice(sqft) {
+    if (sqft <= 2000) return 200;
+    if (sqft <= 5000) return 400;
+    return 800;
 }
