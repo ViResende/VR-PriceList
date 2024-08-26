@@ -4,81 +4,75 @@ function calculatePrice() {
     const frequency = document.getElementById('frequency').value;
     const helpers = parseInt(document.getElementById('helpers').value, 10);
     const estimatedHours = parseFloat(document.getElementById('estimatedHours').value);
-    
-    const addons = document.querySelectorAll('input[name="addons"]:checked');
-    let addonsTotal = 0;
-    addons.forEach(addon => {
-        addonsTotal += 20;  // Add your custom logic for calculating add-ons here.
-    });
-    
-    let basePrice = 0;
 
+    const addons = document.querySelectorAll('input[name="addons"]:checked');
+    let addonCost = 0;
+    
+    // Calculate add-on costs
+    addons.forEach(addon => {
+        switch (addon.value) {
+            case "fridge": addonCost += 35; break;
+            case "oven": addonCost += 45; break;
+            case "laundry_fold": addonCost += 20; break;
+            case "laundry_wash": addonCost += 30; break;
+            case "garage": addonCost += 50; break;
+            case "porch": addonCost += 20; break;
+            case "sunroom": addonCost += 30; break;
+            case "dishes": addonCost += 10; break;
+            case "windows": addonCost += 4; break;
+            case "restocking": addonCost += 20; break;
+        }
+    });
+
+    let basePrice = 0;
+    let ownerRate = 0;
+    let helperRate = 0;
+
+    // Base price, owner rate, and helper rate calculation based on service type
     switch (serviceType) {
         case 'standard':
-            if (squareFootage < 1000) {
-                basePrice = 140; // Mid-point between $130 and $150
-            } else if (squareFootage < 2000) {
-                basePrice = 175; // Mid-point between $150 and $200
-            } else if (squareFootage < 3000) {
-                basePrice = 225; // Mid-point between $200 and $250
-            } else {
-                basePrice = 275; // Mid-point between $250 and $300
-            }
-            basePrice += estimatedHours * 70;
+            basePrice = 540; // Base price for 3,500 - 4,700 sq ft
+            ownerRate = 70; // Owner's hourly rate
+            helperRate = 65; // Helper's daily rate
             break;
         case 'deep':
-            if (squareFootage < 1000) {
-                basePrice = 225; // Mid-point between $200 and $250
-            } else if (squareFootage < 2000) {
-                basePrice = 300; // Mid-point between $250 and $350
-            } else if (squareFootage < 3000) {
-                basePrice = 400; // Mid-point between $350 and $450
-            } else {
-                basePrice = 500; // Mid-point between $450 and $550
-            }
-            basePrice += estimatedHours * 90;
+            basePrice = 800; // Base price for 3,500 - 4,700 sq ft
+            ownerRate = 90; // Owner's hourly rate
+            helperRate = 120; // Helper's daily rate
             break;
         case 'post_construction':
-            if (squareFootage < 1000) {
-                basePrice = 250; // Mid-point between $200 and $300
-            } else if (squareFootage < 2000) {
-                basePrice = 600; // Mid-point between $500 and $700
-            } else {
-                basePrice = 1000; // Mid-point between $800 and $1200
-            }
-            basePrice += estimatedHours * 95;
-            break;
-        case 'airbnb':
-            basePrice = 150; // Assuming a flat rate for Airbnb turnover
+            basePrice = 1200; // Base price for 3,500 - 4,700 sq ft
+            ownerRate = 90; // Owner's hourly rate
+            helperRate = 175; // Helper's daily rate
             break;
         case 'move_in_out':
-            if (squareFootage < 1000) {
-                basePrice = 275; // Mid-point between $250 and $300
-            } else if (squareFootage < 2000) {
-                basePrice = 350; // Mid-point between $300 and $400
-            } else if (squareFootage < 3000) {
-                basePrice = 450; // Mid-point between $400 and $500
-            } else {
-                basePrice = 575; // Mid-point between $500 and $650
-            }
-            basePrice += estimatedHours * 85;
+            basePrice = 600; // Base price for 3,500 - 4,700 sq ft
+            ownerRate = 85; // Owner's hourly rate (adjusted)
+            helperRate = 85; // Helper's daily rate (adjusted)
             break;
         case 'commercial':
-            basePrice = 200; // Base rate for commercial, add your logic here
+            basePrice = 1000; // Base price for 3,500 - 4,700 sq ft
+            ownerRate = 75; // Owner's hourly rate
+            helperRate = 75; // Helper's daily rate
             break;
     }
 
-    // Add discount for biweekly service
+    // Calculate the total helper cost
+    const helperCost = helpers * helperRate;
+
+    // Calculate the total owner cost based on estimated hours
+    const ownerCost = estimatedHours * ownerRate;
+
+    // Calculate the total price before applying discounts or additional fees
+    let totalPrice = basePrice + ownerCost + helperCost + addonCost;
+
+    // Apply frequency-based adjustments
     if (frequency === 'biweekly') {
-        basePrice *= 0.9; // 10% discount
+        totalPrice *= 0.9; // Apply 10% discount for biweekly services
     } else if (frequency === 'one_time') {
-        basePrice += 15; // $15 additional fee for one-time cleaning
+        totalPrice += 15; // Apply $15 additional fee for one-time cleaning
     }
 
-    // Add cost of helpers
-    const helperCost = helpers * 130; // Assuming helper cost is $130 per day
-    basePrice += helperCost + addonsTotal;
-
     // Display the total price
-    document.getElementById('totalPrice').textContent = `$${basePrice.toFixed(2)}`;
+    document.getElementById('totalPrice').textContent = `$${totalPrice.toFixed(2)}`;
 }
