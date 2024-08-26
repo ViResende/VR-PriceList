@@ -1,4 +1,10 @@
-function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, frequency) {
+function calculatePrice() {
+    const serviceType = document.getElementById('serviceType').value;
+    const squareFootage = parseInt(document.getElementById('squareFootage').value);
+    const estimatedHours = parseFloat(document.getElementById('estimatedHours').value);
+    const helpers = parseInt(document.getElementById('helpers').value);
+    const frequency = document.getElementById('frequency').value;
+
     let hourlyRate = 0;
     let basePrice = 0;
     let helperCost = 0;
@@ -8,7 +14,7 @@ function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, fre
     switch (serviceType) {
         case "deep":
             hourlyRate = 90;
-            helperCost = helpers * 130; // Helpers paid $130 per day for deep cleaning
+            helperCost = helpers * 130;
 
             if (squareFootage < 1000) {
                 basePrice = 200 + Math.min((estimatedHours - (200 / hourlyRate)) * hourlyRate, 250 - 200);
@@ -24,7 +30,7 @@ function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, fre
 
         case "post_construction":
             hourlyRate = 95;
-            helperCost = helpers * 180; // Helpers paid $180 per day for post-construction cleaning
+            helperCost = helpers * 180;
 
             if (squareFootage < 1000) {
                 basePrice = 200 + Math.min((estimatedHours - (200 / hourlyRate)) * hourlyRate, 300 - 200);
@@ -38,7 +44,7 @@ function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, fre
 
         case "move_in_out":
             hourlyRate = 85;
-            helperCost = helpers * 150; // Helpers paid $150 per job
+            helperCost = helpers * 150;
 
             if (squareFootage < 1000) {
                 basePrice = 250 + Math.min((estimatedHours - (250 / hourlyRate)) * hourlyRate, 300 - 250);
@@ -54,7 +60,7 @@ function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, fre
 
         case "standard":
             hourlyRate = 70;
-            helperCost = helpers * 60; // Helpers paid $60 per job
+            helperCost = helpers * 60;
 
             if (squareFootage < 1000) {
                 basePrice = 130 + Math.min((estimatedHours - (130 / hourlyRate)) * hourlyRate, 150 - 130);
@@ -78,18 +84,9 @@ function calculatePrice(serviceType, squareFootage, estimatedHours, helpers, fre
         discount = totalPrice * 0.10;
         totalPrice -= discount;
     } else if (frequency === "one_time") {
-        totalPrice += 15; // Add $15 for one-time clean
+        totalPrice += 15;
     }
 
-    return totalPrice;
+    document.getElementById('totalPrice').textContent = `$${totalPrice.toFixed(2)}`;
 }
 
-// Example usage:
-let serviceType = "deep";
-let squareFootage = 1500;
-let estimatedHours = 5;
-let helpers = 1;
-let frequency = "biweekly";
-
-let finalPrice = calculatePrice(serviceType, squareFootage, estimatedHours, helpers, frequency);
-console.log("Total Price:", finalPrice);
