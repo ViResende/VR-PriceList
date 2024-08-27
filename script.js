@@ -4,12 +4,12 @@ function calculatePrice() {
     const frequency = document.getElementById('frequency').value;
     const helpers = parseInt(document.getElementById('helpers').value);
     const estimatedHours = parseFloat(document.getElementById('estimatedHours').value);
-
+    
     let basePrice = 0;
     let ownerRate = 0;
-    let helperRate = 0;
+    const helperRatePerJob = 50; // Fixed rate per job for helpers
 
-    // Determine base price and rates based on service type
+    // Determine base price and owner rate based on service type
     switch (serviceType) {
         case "standard":
             if (squareFootage <= 1000) {
@@ -22,7 +22,6 @@ function calculatePrice() {
                 basePrice = 540;
             }
             ownerRate = 70;
-            helperRate = 50;
             break;
 
         case "deep":
@@ -36,7 +35,6 @@ function calculatePrice() {
                 basePrice = 800;
             }
             ownerRate = 80;
-            helperRate = 120;
             break;
 
         case "post_construction":
@@ -50,7 +48,6 @@ function calculatePrice() {
                 basePrice = 1200;
             }
             ownerRate = 90;
-            helperRate = 175;
             break;
 
         case "move_in_out":
@@ -64,7 +61,6 @@ function calculatePrice() {
                 basePrice = 600;
             }
             ownerRate = 80;
-            helperRate = 120;
             break;
 
         case "commercial":
@@ -76,28 +72,62 @@ function calculatePrice() {
                 basePrice = 1000;
             }
             ownerRate = 75;
-            helperRate = 65;
             break;
 
         default:
             basePrice = 0;
             ownerRate = 0;
-            helperRate = 0;
             break;
     }
 
-    // Calculate additional cost for helpers
-    const helperCost = helpers * helperRate;
+    // Calculate additional cost for helpers (fixed rate per job)
+    const helperCost = helpers * helperRatePerJob;
 
-    // Calculate the total base cost
+    // Calculate the owner's cost based on hours worked
     const ownerCost = ownerRate * estimatedHours;
-    let totalCost = basePrice + ownerCost + helperCost;
 
-    // Apply biweekly discount
-    if (frequency === "biweekly") {
-        totalCost *= 0.9;
-    }
+    // Add-ons cost calculation
+    let addonsCost = 0;
+    const addons = document.querySelectorAll('input[name="addons"]:checked');
+    addons.forEach(addon => {
+        switch (addon.value) {
+            case 'fridge':
+                addonsCost += 35;
+                break;
+            case 'oven':
+                addonsCost += 45;
+                break;
+            case 'laundry_fold':
+                addonsCost += 20;
+                break;
+            case 'laundry_wash':
+                addonsCost += 35;
+                break;
+            case 'garage':
+                addonsCost += 50; // Adjust as needed if different
+                break;
+            case 'porch':
+                addonsCost += 20;
+                break;
+            case 'sunroom':
+                addonsCost += 50;
+                break;
+            case 'dishes':
+                addonsCost += 20;
+                break;
+            case 'windows':
+                addonsCost += 5;
+                break;
+            case 'restocking':
+                addonsCost += 20;
+                break;
+        }
+    });
+
+    // Calculate the total price
+    const totalPrice = basePrice + helperCost + ownerCost + addonsCost;
 
     // Display the total price
-    document.getElementById('totalPrice').innerText = `$${totalCost.toFixed(2)}`;
+    document.getElementById('totalPrice').textContent = `$${totalPrice.toFixed(2)}`;
 }
+
