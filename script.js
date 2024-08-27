@@ -101,4 +101,3 @@ function calculatePrice() {
     // Display the total price
     document.getElementById('totalPrice').innerText = `$${totalCost.toFixed(2)}`;
 }
-
