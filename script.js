@@ -3,7 +3,7 @@ function calculateQuote() {
     const houseSize = parseInt(document.getElementById('houseSize').value);
     const rooms = parseInt(document.getElementById('rooms').value);
     const bathrooms = parseInt(document.getElementById('bathrooms').value);
-    const kitchenSize = document.getElementById('kitchenSize').value;
+    const cleaners = parseInt(document.getElementById('cleaners').value);
     const extras = Array.from(document.getElementById('extras').selectedOptions).map(option => option.value);
 
     let baseRate = 0;
@@ -40,6 +40,9 @@ function calculateQuote() {
         price = (houseSize * 0.5) + helperRate;
     }
 
+    // Adding cleaners' rate
+    price += cleanerRate * cleaners;
+
     if (extras.includes('ecoFriendly')) price += 10;
     if (extras.includes('pet')) price += 5;
 
@@ -73,6 +76,10 @@ function calculateQuote() {
     if (extras.includes('carpetHardFloor')) price += 12;
     if (extras.includes('onlyCarpet')) price += 5;
 
+    if (extras.includes('kitchenSmall')) price += 12;
+    if (extras.includes('kitchenMedium')) price += 20;
+    if (extras.includes('kitchenBig')) price += 30;
+
     if (extras.includes('nonEcoMaterial')) price += 5;
     if (extras.includes('marketing')) price += 5;
 
@@ -84,14 +91,4 @@ function calculateQuote() {
     const discount10 = (price * 0.90).toFixed(2);
     const discount15 = (price * 0.85).toFixed(2);
 
-    document.getElementById('result').innerHTML = `
-        <p>Base Price: $${price.toFixed(2)}</p>
-        <p>Competitive Prices:</p>
-        <ul>
-            <li>Option 1 (5% discount): $${discount5}</li>
-            <li>Option 2 (10% discount): $${discount10}</li>
-            <li>Option 3 (15% discount): $${discount15}</li>
-        </ul>
-    `;
-}
-
+    document.getElement
