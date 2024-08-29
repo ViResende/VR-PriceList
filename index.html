@@ -20,7 +20,10 @@
         <option value="postConstruction">Post-Construction Cleaning</option>
         <option value="airbnb">Airbnb Cleaning</option>
     </select>
-    
+
+    <label for="cleaners">Number of Cleaners:</label>
+    <input type="number" id="cleaners" value="1" min="1">
+
     <label for="houseSize">Size of House (sq ft):</label>
     <input type="number" id="houseSize">
 
@@ -30,15 +33,8 @@
     <label for="bathrooms">Number of Bathrooms:</label>
     <input type="number" id="bathrooms">
 
-    <label for="kitchenSize">Kitchen Size:</label>
-    <select id="kitchenSize">
-        <option value="small">Small</option>
-        <option value="medium">Medium</option>
-        <option value="big">Big</option>
-    </select>
-
     <label for="extras">Extras (Select All That Apply):</label>
-    <select id="extras" multiple>
+    <select id="extras" multiple size="10">
         <option value="ecoFriendly">Eco-Friendly Cleaning (+$10)</option>
         <option value="pet">Pet (+$5)</option>
         <option value="lowDirty">Low Dirty (+$10)</option>
@@ -59,6 +55,9 @@
         <option value="basement">Basement (+$10)</option>
         <option value="carpetHardFloor">Carpet + Hard Floor (+$12)</option>
         <option value="onlyCarpet">Only Carpet (+$5)</option>
+        <option value="kitchenSmall">Kitchen Small (+$12)</option>
+        <option value="kitchenMedium">Kitchen Medium (+$20)</option>
+        <option value="kitchenBig">Kitchen Big (+$30)</option>
         <option value="nonEcoMaterial">Non-Eco Material (+$5)</option>
         <option value="marketing">Marketing (+$5)</option>
     </select>
@@ -72,4 +71,3 @@
 
 </body>
 </html>
-
