@@ -77,4 +77,20 @@ function calculateQuote() {
     // Add automatic fees (gas, marketing, material)
     price += 20;
 
-    //
+    // Calculate competitive prices
+    const discount5 = (price * 0.95).toFixed(2);
+    const discount10 = (price * 0.90).toFixed(2);
+    const discount15 = (price * 0.85).toFixed(2);
+
+    // Display the result
+    document.getElementById('result').innerHTML = `
+        <p><strong>Final Price: $${price.toFixed(2)}</strong></p>
+        <p><strong>Negotiation Options:</strong></p>
+        <ul>
+            <li>Option 1 (5% discount): $${discount5}</li>
+            <li>Option 2 (10% discount): $${discount10}</li>
+            <li>Option 3 (15% discount): $${discount15}</li>
+        </ul>
+    `;
+}
+
