@@ -1,9 +1,9 @@
 function calculateQuote() {
     const jobType = document.getElementById('jobType').value;
-    const houseSize = parseInt(document.getElementById('houseSize').value);
-    const rooms = parseInt(document.getElementById('rooms').value);
-    const bathrooms = parseInt(document.getElementById('bathrooms').value);
-    const cleaners = parseInt(document.getElementById('cleaners').value);
+    const houseSize = parseInt(document.getElementById('houseSize').value) || 0;
+    const rooms = parseInt(document.getElementById('rooms').value) || 0;
+    const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
+    const cleaners = parseInt(document.getElementById('cleaners').value) || 1;
     const extras = Array.from(document.getElementById('extras').selectedOptions).map(option => option.value);
 
     let baseRate = 0;
@@ -32,8 +32,8 @@ function calculateQuote() {
 
     let price = (baseRate * rooms) + (bathrooms * 15) + (houseSize * (jobType === 'standard' ? 0.3 : 0.5));
 
-    // Add helper costs
-    if (jobType === 'standard' || jobType === 'deep' || jobType === 'airbnb') {
+    // Add helper costs if applicable
+    if (jobType !== 'moveInOut' && jobType !== 'postConstruction') {
         price += helperRate * cleaners;
     }
 
