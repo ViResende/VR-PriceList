@@ -3,64 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleaning Service Price Calculator</title>
+    <title>Cleaning Service Quote</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <img src="logoVR.png" alt="Company Logo" class="logo">
-    <h1>Cleaning Service Price Calculator</h1>
-    <form id="priceForm">
-        <!-- Service Type -->
-        <label for="serviceType">Service Type:</label>
-        <select id="serviceType" name="serviceType">
-            <option value="standard">Standard Cleaning</option>
-            <option value="deep">Deep Cleaning</option>
-            <option value="post_construction">Post-Construction Cleaning</option>
-            <option value="airbnb">Airbnb Cleaning</option>
-            <option value="move_in_out">Move-In/Move-Out Cleaning</option>
-            <option value="commercial">Commercial Cleaning</option>
-        </select><br>
 
-        <!-- Square Footage -->
-        <label for="squareFootage">Square Footage:</label>
-        <input type="number" id="squareFootage" name="squareFootage"><br>
+<div class="container">
+    <img id="logo" src="logoVR.png" alt="Company Logo">
+    <h1>Cleaning Service Quote</h1>
+    
+    <label for="jobType">Type of Job:</label>
+    <select id="jobType">
+        <option value="standard">Standard Cleaning</option>
+        <option value="deep">Deep Cleaning</option>
+        <option value="moveInOut">Move-In/Move-Out Cleaning</option>
+        <option value="postConstruction">Post-Construction Cleaning</option>
+        <option value="airbnb">Airbnb Cleaning</option>
+    </select>
+    
+    <label for="houseSize">Size of House (sq ft):</label>
+    <input type="number" id="houseSize">
 
-        <!-- Frequency -->
-        <label for="frequency">Frequency:</label>
-        <select id="frequency" name="frequency">
-            <option value="biweekly">Biweekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="one_time">One-Time</option>
-        </select><br>
+    <label for="rooms">Number of Rooms:</label>
+    <input type="number" id="rooms">
 
-        <!-- Number of Helpers -->
-        <label for="helpers">Number of Helpers:</label>
-        <input type="number" id="helpers" name="helpers" value="0"><br>
+    <label for="bathrooms">Number of Bathrooms:</label>
+    <input type="number" id="bathrooms">
 
-        <!-- Estimated Hours -->
-        <label for="estimatedHours">Estimated Hours:</label>
-        <input type="number" step="0.5" id="estimatedHours" name="estimatedHours"><br>
+    <label for="kitchenSize">Kitchen Size:</label>
+    <select id="kitchenSize">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="big">Big</option>
+    </select>
 
-        <!-- Add-Ons -->
-        <label for="addons">Add-Ons (select all that apply):</label><br>
-        <input type="checkbox" name="addons" value="fridge"> Fridge (interior)<br>
-        <input type="checkbox" name="addons" value="oven"> Oven<br>
-        <input type="checkbox" name="addons" value="laundry_fold"> Laundry (fold only)<br>
-        <input type="checkbox" name="addons" value="laundry_wash"> Laundry (wash & fold)<br>
-        <input type="checkbox" name="addons" value="garage"> Garage<br>
-        <input type="checkbox" name="addons" value="porch"> Porch<br>
-        <input type="checkbox" name="addons" value="sunroom"> Sunroom<br>
-        <input type="checkbox" name="addons" value="dishes"> Dishes (hand wash)<br>
-        <input type="checkbox" name="addons" value="windows"> Windows (interior only)<br>
-        <input type="checkbox" name="addons" value="restocking"> Restocking Supplies<br>
+    <label for="extras">Extras (Select All That Apply):</label>
+    <select id="extras" multiple>
+        <option value="ecoFriendly">Eco-Friendly Cleaning (+$10)</option>
+        <option value="pet">Pet (+$5)</option>
+        <option value="lowDirty">Low Dirty (+$10)</option>
+        <option value="mediumDirty">Medium Dirty (+$20)</option>
+        <option value="highDirty">High Dirty (+$30)</option>
+        <option value="makeBed">Make Bed (+$5 per bed)</option>
+        <option value="fridge">Fridge Interior (+$35)</option>
+        <option value="oven">Oven (+$40)</option>
+        <option value="foldLaundry">Fold Laundry (+$15 per load)</option>
+        <option value="washFoldLaundry">Wash & Fold Laundry (+$25 per load)</option>
+        <option value="garage">Garage Cleaning</option>
+        <option value="porch">Porch</option>
+        <option value="sunroom">Sunroom</option>
+        <option value="dishes">Dishes (+$10)</option>
+        <option value="windows">Windows (+$5 per window)</option>
+        <option value="office">Office (+$10)</option>
+        <option value="diningRoom">Dining Room (+$10)</option>
+        <option value="basement">Basement (+$10)</option>
+        <option value="carpetHardFloor">Carpet + Hard Floor (+$12)</option>
+        <option value="onlyCarpet">Only Carpet (+$5)</option>
+        <option value="nonEcoMaterial">Non-Eco Material (+$5)</option>
+        <option value="marketing">Marketing (+$5)</option>
+    </select>
 
-        <!-- Calculate Button -->
-        <button type="button" onclick="calculatePrice()">Calculate</button>
-    </form>
+    <button class="button" onclick="calculateQuote()">Calculate Quote</button>
 
-    <!-- Display Total Price -->
-    <h2>Total Price: <span id="totalPrice" class="total-price">$0</span></h2>
+    <div id="result" class="result"></div>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
+
