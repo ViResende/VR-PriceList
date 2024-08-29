@@ -1,98 +1,97 @@
-function calculatePrice() {
-    // Get the values from the form
-    const serviceType = document.getElementById('serviceType').value;
-    const squareFootage = parseFloat(document.getElementById('squareFootage').value);
-    const frequency = document.getElementById('frequency').value;
-    const numberOfHelpers = parseInt(document.getElementById('helpers').value) || 0;
-    const estimatedHours = parseFloat(document.getElementById('estimatedHours').value) || 0;
-    
-    // Add-ons costs
-    const addOnCosts = {
-        fridge: 35,
-        oven: 45,
-        laundry_fold: 20,
-        laundry_wash: 35,
-        garage: [50, 150],  // Range
-        porch: 20,
-        sunroom: 50,
-        dishes: 20,
-        windows: 5,
-        restocking: 20
-    };
-    
-    // Initialize total cost
-    let basePrice = 0;
-    let helperCost = 0;
-    let totalAddOnCost = 0;
+function calculateQuote() {
+    const jobType = document.getElementById('jobType').value;
+    const houseSize = parseInt(document.getElementById('houseSize').value);
+    const rooms = parseInt(document.getElementById('rooms').value);
+    const bathrooms = parseInt(document.getElementById('bathrooms').value);
+    const kitchenSize = document.getElementById('kitchenSize').value;
+    const extras = Array.from(document.getElementById('extras').selectedOptions).map(option => option.value);
 
-    // Calculate base price and helper cost based on service type and square footage
-    switch(serviceType) {
+    let baseRate = 0;
+    let helperRate = 0;
+
+    switch (jobType) {
         case 'standard':
-            if (squareFootage < 1000) basePrice = 130;
-            else if (squareFootage <= 2000) basePrice = 150;
-            else if (squareFootage <= 3000) basePrice = 200;
-            else basePrice = 250;
-            helperCost = 50;
+            baseRate = 60;
+            helperRate = 50;
             break;
         case 'deep':
-            if (squareFootage < 1000) basePrice = 200;
-            else if (squareFootage <= 2000) basePrice = 250;
-            else if (squareFootage <= 3000) basePrice = 350;
-            else basePrice = 450;
-            helperCost = 120;
+            baseRate = 70;
+            helperRate = 120;
             break;
-        case 'post_construction':
-            if (squareFootage < 1000) basePrice = 200;
-            else if (squareFootage <= 2000) basePrice = 500;
-            else if (squareFootage <= 3000) basePrice = 800;
-            else basePrice = 1000;
-            helperCost = 175;
+        case 'moveInOut':
+            baseRate = 120;
             break;
-        case 'move_in_out':
-            if (squareFootage < 1000) basePrice = 250;
-            else if (squareFootage <= 2000) basePrice = 300;
-            else if (squareFootage <= 3000) basePrice = 400;
-            else basePrice = 500;
-            helperCost = 120;
-            break;
-        case 'commercial':
-            if (squareFootage <= 2000) basePrice = 200;
-            else if (squareFootage <= 5000) basePrice = 400;
-            else basePrice = 800;
-            helperCost = 65;
+        case 'postConstruction':
+            baseRate = 160;
             break;
         case 'airbnb':
-            basePrice = 100; // Use $100 as base for simplicity
-            helperCost = 60;
+            baseRate = 100 + (houseSize * 0.2);
+            helperRate = 50;
             break;
     }
-    
-    // Calculate add-on costs
-    const checkboxes = document.querySelectorAll('input[name="addons"]:checked');
-    checkboxes.forEach(checkbox => {
-        const addOn = checkbox.value;
-        if (addOnCosts[addOn]) {
-            if (Array.isArray(addOnCosts[addOn])) {
-                totalAddOnCost += addOnCosts[addOn][1]; // Use the max value for ranges
-            } else {
-                totalAddOnCost += addOnCosts[addOn];
-            }
-        }
-    });
 
-    // Calculate discount based on frequency
-    let discount = 0;
-    if (frequency === 'biweekly') {
-        discount = 0.10; // 10% discount
+    let price = 0;
+
+    if (jobType === 'standard' || jobType === 'deep') {
+        price = (baseRate * rooms) + (bathrooms * 15) + (houseSize * (jobType === 'standard' ? 0.3 : 0.5));
+    } else if (jobType === 'moveInOut') {
+        price = (houseSize * 0.3) + helperRate;
+    } else if (jobType === 'postConstruction') {
+        price = (houseSize * 0.5) + helperRate;
     }
-    
-    // Calculate total cost
-    const ownerRate = serviceType === 'commercial' ? 75 : 80; // Example rates for different services
-    const baseCost = basePrice + (ownerRate * estimatedHours) + (helperCost * numberOfHelpers);
-    const totalCost = baseCost + totalAddOnCost;
-    const discountedCost = totalCost - (totalCost * discount);
 
-    // Display the total price
-    document.getElementById('totalPrice').textContent = `$${discountedCost.toFixed(2)}`;
+    if (extras.includes('ecoFriendly')) price += 10;
+    if (extras.includes('pet')) price += 5;
+
+    if (extras.includes('lowDirty')) price += 10;
+    if (extras.includes('mediumDirty')) price += 20;
+    if (extras.includes('highDirty')) price += 30;
+
+    if (extras.includes('makeBed')) price += rooms * 5;
+    if (extras.includes('fridge')) price += 35;
+    if (extras.includes('oven')) price += 40;
+
+    if (extras.includes('foldLaundry')) price += 15;
+    if (extras.includes('washFoldLaundry')) price += 25;
+
+    if (extras.includes('garage')) {
+        price += houseSize < 1000 ? 50 : houseSize < 2000 ? 90 : 130;
+    }
+    if (extras.includes('porch')) {
+        price += houseSize < 1000 ? 20 : houseSize < 2000 ? 30 : 40;
+    }
+    if (extras.includes('sunroom')) {
+        price += houseSize < 1000 ? 30 : houseSize < 2000 ? 45 : 60;
+    }
+    if (extras.includes('dishes')) price += 10;
+    if (extras.includes('windows')) price += 5 * rooms;
+
+    if (extras.includes('office')) price += 10;
+    if (extras.includes('diningRoom')) price += 10;
+    if (extras.includes('basement')) price += 10;
+
+    if (extras.includes('carpetHardFloor')) price += 12;
+    if (extras.includes('onlyCarpet')) price += 5;
+
+    if (extras.includes('nonEcoMaterial')) price += 5;
+    if (extras.includes('marketing')) price += 5;
+
+    // Adding gas fee
+    price += 10;
+
+    // Show pricing options
+    const discount5 = (price * 0.95).toFixed(2);
+    const discount10 = (price * 0.90).toFixed(2);
+    const discount15 = (price * 0.85).toFixed(2);
+
+    document.getElementById('result').innerHTML = `
+        <p>Base Price: $${price.toFixed(2)}</p>
+        <p>Competitive Prices:</p>
+        <ul>
+            <li>Option 1 (5% discount): $${discount5}</li>
+            <li>Option 2 (10% discount): $${discount10}</li>
+            <li>Option 3 (15% discount): $${discount15}</li>
+        </ul>
+    `;
 }
 
