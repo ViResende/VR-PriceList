@@ -77,4 +77,4 @@ function calculateQuote() {
     // Add automatic fees (gas, marketing, material)
     price += 20;
 
-    // Show final price and competitive options
+    //
