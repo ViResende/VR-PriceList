@@ -30,65 +30,51 @@ function calculateQuote() {
             break;
     }
 
-    let price = 0;
+    let price = (baseRate * rooms) + (bathrooms * 15) + (houseSize * (jobType === 'standard' ? 0.3 : 0.5));
 
-    if (jobType === 'standard' || jobType === 'deep') {
-        price = (baseRate * rooms) + (bathrooms * 15) + (houseSize * (jobType === 'standard' ? 0.3 : 0.5));
-    } else if (jobType === 'moveInOut') {
-        price = (houseSize * 0.3) + helperRate;
-    } else if (jobType === 'postConstruction') {
-        price = (houseSize * 0.5) + helperRate;
+    // Add helper costs
+    if (jobType === 'standard' || jobType === 'deep' || jobType === 'airbnb') {
+        price += helperRate * cleaners;
     }
 
-    // Adding cleaners' rate
-    price += cleanerRate * cleaners;
+    // Add extras
+    extras.forEach(extra => {
+        switch (extra) {
+            case 'ecoFriendly': price += 10; break;
+            case 'pet': price += 5; break;
+            case 'lowDirty': price += 10; break;
+            case 'mediumDirty': price += 20; break;
+            case 'highDirty': price += 30; break;
+            case 'makeBed': price += rooms * 5; break;
+            case 'fridge': price += 35; break;
+            case 'oven': price += 40; break;
+            case 'foldLaundry': price += 15; break;
+            case 'washFoldLaundry': price += 25; break;
+            case 'garageSmall': price += 50; break;
+            case 'garageMedium': price += 90; break;
+            case 'garageBig': price += 130; break;
+            case 'porchSmall': price += 20; break;
+            case 'porchMedium': price += 30; break;
+            case 'porchBig': price += 40; break;
+            case 'sunroomSmall': price += 30; break;
+            case 'sunroomMedium': price += 45; break;
+            case 'sunroomBig': price += 60; break;
+            case 'dishes': price += 10; break;
+            case 'windows': price += rooms * 5; break;
+            case 'kitchenSmall': price += 12; break;
+            case 'kitchenMedium': price += 20; break;
+            case 'kitchenBig': price += 30; break;
+            case 'gasStove': price += 5; break;
+            case 'office': price += 10; break;
+            case 'diningRoom': price += 10; break;
+            case 'basement': price += 10; break;
+            case 'bathroom': price += 15; break;
+            case 'carpetHardFloor': price += 12; break;
+            case 'onlyCarpet': price += 5; break;
+        }
+    });
 
-    if (extras.includes('ecoFriendly')) price += 10;
-    if (extras.includes('pet')) price += 5;
+    // Add automatic fees (gas, marketing, material)
+    price += 20;
 
-    if (extras.includes('lowDirty')) price += 10;
-    if (extras.includes('mediumDirty')) price += 20;
-    if (extras.includes('highDirty')) price += 30;
-
-    if (extras.includes('makeBed')) price += rooms * 5;
-    if (extras.includes('fridge')) price += 35;
-    if (extras.includes('oven')) price += 40;
-
-    if (extras.includes('foldLaundry')) price += 15;
-    if (extras.includes('washFoldLaundry')) price += 25;
-
-    if (extras.includes('garage')) {
-        price += houseSize < 1000 ? 50 : houseSize < 2000 ? 90 : 130;
-    }
-    if (extras.includes('porch')) {
-        price += houseSize < 1000 ? 20 : houseSize < 2000 ? 30 : 40;
-    }
-    if (extras.includes('sunroom')) {
-        price += houseSize < 1000 ? 30 : houseSize < 2000 ? 45 : 60;
-    }
-    if (extras.includes('dishes')) price += 10;
-    if (extras.includes('windows')) price += 5 * rooms;
-
-    if (extras.includes('office')) price += 10;
-    if (extras.includes('diningRoom')) price += 10;
-    if (extras.includes('basement')) price += 10;
-
-    if (extras.includes('carpetHardFloor')) price += 12;
-    if (extras.includes('onlyCarpet')) price += 5;
-
-    if (extras.includes('kitchenSmall')) price += 12;
-    if (extras.includes('kitchenMedium')) price += 20;
-    if (extras.includes('kitchenBig')) price += 30;
-
-    if (extras.includes('nonEcoMaterial')) price += 5;
-    if (extras.includes('marketing')) price += 5;
-
-    // Adding gas fee
-    price += 10;
-
-    // Show pricing options
-    const discount5 = (price * 0.95).toFixed(2);
-    const discount10 = (price * 0.90).toFixed(2);
-    const discount15 = (price * 0.85).toFixed(2);
-
-    document.getElement
+    // Show final price and competitive options
