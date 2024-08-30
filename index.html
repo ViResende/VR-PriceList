@@ -14,37 +14,48 @@
     
     <label for="jobType">Type of Job:</label>
     <select id="jobType">
-        <option value="standard">Standard Cleaning</option>
+        <option value="oneTime">One-Time</option>
+        <option value="weekly">Weekly</option>
+        <option value="biweekly">Biweekly</option>
+        <option value="monthly">Monthly</option>
         <option value="deep">Deep Cleaning</option>
-        <option value="moveInOut">Move-In/Move-Out Cleaning</option>
-        <option value="postConstruction">Post-Construction Cleaning</option>
-        <option value="airbnb">Airbnb Cleaning</option>
     </select>
 
-    <label for="cleaners">Number of Cleaners:</label>
-    <input type="number" id="cleaners" value="1" min="1">
+    <label for="helper">Do you need a helper?</label>
+    <select id="helper">
+        <option value="no">No</option>
+        <option value="yes">Yes</option>
+    </select>
 
     <label for="houseSize">Size of House (sq ft):</label>
     <input type="number" id="houseSize">
 
-    <label for="rooms">Number of Rooms:</label>
-    <input type="number" id="rooms">
+    <label for="bedrooms">Number of Bedrooms:</label>
+    <input type="number" id="bedrooms">
 
     <label for="bathrooms">Number of Bathrooms:</label>
     <input type="number" id="bathrooms">
 
+    <label for="beds">Number of Beds to Change Sheets:</label>
+    <input type="number" id="beds" value="0" min="0">
+
     <label for="extras">Extras (Select All That Apply):</label>
     <select id="extras" multiple size="10">
+        <option value="kitchenStove">Kitchen Stove (Gas/Spiral) (+$5)</option>
+        <option value="office">Office (+$10)</option>
+        <option value="livingRoomSmall">Living Room/Dining Room Small (+$10)</option>
+        <option value="livingRoomMedium">Living Room/Dining Room Medium/Large (+$20)</option>
+        <option value="basement">Basement (+$15)</option>
+        <option value="onlyCarpet">Only Carpet (+$5)</option>
         <option value="ecoFriendly">Eco-Friendly Cleaning (+$10)</option>
         <option value="pet">Pet (+$5)</option>
-        <option value="lowDirty">Low Dirty (+$10)</option>
-        <option value="mediumDirty">Medium Dirty (+$20)</option>
-        <option value="highDirty">High Dirty (+$30)</option>
-        <option value="makeBed">Make Bed (+$5 per bed)</option>
+        <option value="lowDirty">Low Dirtiness (+$10)</option>
+        <option value="mediumDirty">Medium Dirtiness (+$20)</option>
+        <option value="highDirty">High Dirtiness (+$30)</option>
         <option value="fridge">Fridge Interior (+$35)</option>
         <option value="oven">Oven (+$40)</option>
-        <option value="foldLaundry">Fold Laundry (+$15 per load)</option>
-        <option value="washFoldLaundry">Wash & Fold Laundry (+$25 per load)</option>
+        <option value="foldLaundry">Laundry (Fold Only) (+$15 per load)</option>
+        <option value="washFoldLaundry">Laundry (Wash & Fold) (+$25 per load)</option>
         <option value="garageSmall">Garage Small (+$50)</option>
         <option value="garageMedium">Garage Medium (+$90)</option>
         <option value="garageBig">Garage Big (+$130)</option>
@@ -54,19 +65,12 @@
         <option value="sunroomSmall">Sunroom Small (+$30)</option>
         <option value="sunroomMedium">Sunroom Medium (+$45)</option>
         <option value="sunroomBig">Sunroom Big (+$60)</option>
-        <option value="dishes">Dishes (+$10)</option>
-        <option value="windows">Windows (+$5 per window)</option>
-        <option value="kitchenSmall">Kitchen Small (+$12)</option>
-        <option value="kitchenMedium">Kitchen Medium (+$20)</option>
-        <option value="kitchenBig">Kitchen Big (+$30)</option>
-        <option value="gasStove">Gas or Spiral Stove (+$5)</option>
-        <option value="office">Office (+$10)</option>
-        <option value="diningRoom">Dining Room (+$10)</option>
-        <option value="basement">Basement (+$10)</option>
-        <option value="bathroom">Bathroom (+$15)</option>
-        <option value="carpetHardFloor">Carpet + Hard Floor (+$12)</option>
-        <option value="onlyCarpet">Only Carpet (+$5)</option>
+        <option value="dishes">Dishes (Hand Wash) (+$10)</option>
+        <option value="windows">Windows (Interior Only) (+$5 per window)</option>
     </select>
+
+    <label for="flatRate">Flat Rate (if applicable):</label>
+    <input type="number" id="flatRate" placeholder="Leave empty if not using">
 
     <button class="button" onclick="calculateQuote()">Calculate Quote</button>
 
@@ -77,3 +81,4 @@
 
 </body>
 </html>
+
