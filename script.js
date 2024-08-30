@@ -28,11 +28,15 @@ function calculateQuote() {
         // Add extras
         extras.forEach(extra => {
             switch (extra) {
-                case 'kitchenClean': price += 30; break;
+                case 'kitchenSmall': price += 12; break;
+                case 'kitchenMedium': price += 20; break;
+                case 'kitchenLarge': price += 30; break;
                 case 'kitchenStove': price += 5; break;
-                case 'office': price += 10; break;
                 case 'livingRoomSmall': price += 10; break;
                 case 'livingRoomMedium': price += 20; break;
+                case 'livingRoomLarge': price += 30; break;
+                case 'makeBed': price += beds * 5; break;
+                case 'office': price += 10; break;
                 case 'basement': price += 15; break;
                 case 'onlyCarpet': price += 5; break;
                 case 'ecoFriendly': price += 10; break;
@@ -44,11 +48,27 @@ function calculateQuote() {
                 case 'oven': price += 40; break;
                 case 'foldLaundry': price += 15; break;
                 case 'washFoldLaundry': price += 25; break;
-                case 'garageSmall': price += 50; break;
-                case 'garageMedium': price += 90; break;
-                case 'garageBig': price += 130; break;
+                case 'windows': price += 5 * windows; break;
+                case 'baseboards': price += baseboardPrice; break;
+                case 'dustBlinds': price += 20; break;
                 case 'porchSmall': price += 20; break;
-                case 'porchMedium': price += 30; break;
-                case 'porchBig': price +=
+            }
+        });
+
+        // Adjust for frequency
+        if (jobType === "weekly") {
+            // No change for weekly
+        } else if (jobType === "biweekly") {
+            price -= 10; // $10 discount for biweekly
+        } else if (jobType === "monthly") {
+            price *= 1.2; // 20% increase for monthly
+        } else if (jobType === "deep") {
+            price *= 2; // Double the price for deep cleaning
+        }
+    }
+
+    // Calculate competitive prices
+    const
+
 
 
