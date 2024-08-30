@@ -6,6 +6,7 @@ function calculateQuote() {
     const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
     const beds = parseInt(document.getElementById('beds').value) || 0;
     const windows = parseInt(document.getElementById('windows').value) || 0;
+    const baseboardPrice = parseFloat(document.getElementById('baseboardPrice').value) || 30; // Default is $30
     const extras = Array.from(document.querySelectorAll('#extras input:checked')).map(input => input.value);
     const flatRate = parseFloat(document.getElementById('flatRate').value) || 0;
 
@@ -48,22 +49,6 @@ function calculateQuote() {
                 case 'garageBig': price += 130; break;
                 case 'porchSmall': price += 20; break;
                 case 'porchMedium': price += 30; break;
-                case 'porchBig': price += 40; break;
-                case 'sunroomSmall': price += 30; break;
-                case 'sunroomMedium': price += 45; break;
-                case 'sunroomBig': price += 60; break;
-                case 'dishes': price += 10; break;
-                case 'windows': price += 5 * windows; break;
-            }
-        });
-
-        // Add cost for changing bed sheets
-        price += beds * 5;
-
-        // Adjust for frequency
-        if (jobType === "weekly") {
-            // No change for weekly
-        } else if (jobType === "biweekly") {
-            price -=
+                case 'porchBig': price +=
 
 
