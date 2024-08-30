@@ -21,11 +21,8 @@
         <option value="deep">Deep Cleaning</option>
     </select>
 
-    <label for="helper">Do you need a helper?</label>
-    <select id="helper">
-        <option value="no">No</option>
-        <option value="yes">Yes</option>
-    </select>
+    <label for="helpers">Number of Helpers:</label>
+    <input type="number" id="helpers" value="0" min="0">
 
     <label for="houseSize">Size of House (sq ft):</label>
     <input type="number" id="houseSize">
@@ -36,37 +33,67 @@
     <label for="bathrooms">Number of Bathrooms:</label>
     <input type="number" id="bathrooms">
 
-    <label for="beds">Number of Beds to Change Sheets:</label>
-    <input type="number" id="beds" value="0" min="0">
-
     <label for="extras">Extras (Select All That Apply):</label>
     <div id="extras">
+
+        <!-- Kitchen Section -->
+        <label><input type="checkbox" value="kitchenClean"> Kitchen Cleaning (+$30)</label><br>
         <label><input type="checkbox" value="kitchenStove"> Kitchen Stove (Gas/Spiral) (+$5)</label><br>
-        <label><input type="checkbox" value="office"> Office (+$10)</label><br>
+        
+        <!-- Living Room Section -->
         <label><input type="checkbox" value="livingRoomSmall"> Living Room/Dining Room Small (+$10)</label><br>
         <label><input type="checkbox" value="livingRoomMedium"> Living Room/Dining Room Medium/Large (+$20)</label><br>
+        
+        <!-- Bedroom Section -->
+        <label><input type="checkbox" value="makeBed"> Change Sheets (per bed, $5 each)</label><br>
+        <input type="number" id="beds" placeholder="Number of beds" min="0"><br>
+        
+        <!-- Basement Section -->
         <label><input type="checkbox" value="basement"> Basement (+$15)</label><br>
+
+        <!-- Carpet Section -->
         <label><input type="checkbox" value="onlyCarpet"> Only Carpet (+$5)</label><br>
+
+        <!-- Eco-Friendly Section -->
         <label><input type="checkbox" value="ecoFriendly"> Eco-Friendly Cleaning (+$10)</label><br>
+
+        <!-- Pet Section -->
         <label><input type="checkbox" value="pet"> Pet (+$5)</label><br>
+
+        <!-- Dirtiness Level Section -->
         <label><input type="checkbox" value="lowDirty"> Low Dirtiness (+$10)</label><br>
         <label><input type="checkbox" value="mediumDirty"> Medium Dirtiness (+$20)</label><br>
         <label><input type="checkbox" value="highDirty"> High Dirtiness (+$30)</label><br>
+
+        <!-- Appliances Section -->
         <label><input type="checkbox" value="fridge"> Fridge Interior (+$35)</label><br>
         <label><input type="checkbox" value="oven"> Oven (+$40)</label><br>
+
+        <!-- Laundry Section -->
         <label><input type="checkbox" value="foldLaundry"> Laundry (Fold Only) (+$15 per load)</label><br>
         <label><input type="checkbox" value="washFoldLaundry"> Laundry (Wash & Fold) (+$25 per load)</label><br>
+
+        <!-- Garage Section -->
         <label><input type="checkbox" value="garageSmall"> Garage Small (+$50)</label><br>
         <label><input type="checkbox" value="garageMedium"> Garage Medium (+$90)</label><br>
-        <label><input type="checkbox" value="garageBig"> Garage Big (+$130)</label><br>
+        <label><input type="checkbox" value="garageBig"> Garage Large (+$130)</label><br>
+
+        <!-- Porch Section -->
         <label><input type="checkbox" value="porchSmall"> Porch Small (+$20)</label><br>
         <label><input type="checkbox" value="porchMedium"> Porch Medium (+$30)</label><br>
-        <label><input type="checkbox" value="porchBig"> Porch Big (+$40)</label><br>
+        <label><input type="checkbox" value="porchBig"> Porch Large (+$40)</label><br>
+
+        <!-- Sunroom Section -->
         <label><input type="checkbox" value="sunroomSmall"> Sunroom Small (+$30)</label><br>
         <label><input type="checkbox" value="sunroomMedium"> Sunroom Medium (+$45)</label><br>
-        <label><input type="checkbox" value="sunroomBig"> Sunroom Big (+$60)</label><br>
+        <label><input type="checkbox" value="sunroomBig"> Sunroom Large (+$60)</label><br>
+
+        <!-- Dishes Section -->
         <label><input type="checkbox" value="dishes"> Dishes (Hand Wash) (+$10)</label><br>
-        <label><input type="checkbox" value="windows"> Windows (Interior Only) (+$5 per window)</label>
+
+        <!-- Windows Section -->
+        <label><input type="checkbox" value="windows"> Windows (Interior Only) (+$5 per window)</label><br>
+        <input type="number" id="windows" placeholder="Number of windows" min="0">
     </div>
 
     <label for="flatRate">Flat Rate (if applicable):</label>
