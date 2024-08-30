@@ -1,10 +1,11 @@
 function calculateQuote() {
     const jobType = document.getElementById('jobType').value;
-    const helper = document.getElementById('helper').value === "yes" ? 1 : 0;
+    const helpers = parseInt(document.getElementById('helpers').value) || 0;
     const houseSize = parseInt(document.getElementById('houseSize').value) || 0;
     const bedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
     const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
     const beds = parseInt(document.getElementById('beds').value) || 0;
+    const windows = parseInt(document.getElementById('windows').value) || 0;
     const extras = Array.from(document.querySelectorAll('#extras input:checked')).map(input => input.value);
     const flatRate = parseFloat(document.getElementById('flatRate').value) || 0;
 
@@ -13,11 +14,20 @@ function calculateQuote() {
     if (!flatRate) {
         // Base rate calculations
         price += (bedrooms * 25) + (bathrooms * 20) + 30; // Bedrooms, Bathrooms, Kitchen
-        price += helper * 50; // Helper cost
+
+        // Calculate helper cost based on job type
+        let helperCost = 0;
+        if (jobType === 'standard' || jobType === 'oneTime' || jobType === 'weekly' || jobType === 'biweekly' || jobType === 'monthly') {
+            helperCost = 50;
+        } else if (jobType === 'deep') {
+            helperCost = 120;
+        }
+        price += helperCost * helpers;
 
         // Add extras
         extras.forEach(extra => {
             switch (extra) {
+                case 'kitchenClean': price += 30; break;
                 case 'kitchenStove': price += 5; break;
                 case 'office': price += 10; break;
                 case 'livingRoomSmall': price += 10; break;
@@ -43,7 +53,7 @@ function calculateQuote() {
                 case 'sunroomMedium': price += 45; break;
                 case 'sunroomBig': price += 60; break;
                 case 'dishes': price += 10; break;
-                case 'windows': price += 5 * bedrooms; break;
+                case 'windows': price += 5 * windows; break;
             }
         });
 
@@ -54,25 +64,6 @@ function calculateQuote() {
         if (jobType === "weekly") {
             // No change for weekly
         } else if (jobType === "biweekly") {
-            price -= 10; // $10 discount for biweekly
-        } else if (jobType === "monthly") {
-            price *= 1.2; // 20% increase for monthly
-        } else if (jobType === "deep") {
-            price *= 2; // Double the price for deep cleaning
-        }
-    }
-
-    // Calculate competitive prices
-    const discount5 = (price * 0.95).toFixed(2);
-    const discount10 = (price * 0.90).toFixed(2);
-    const discount15 = (price * 0.85).toFixed(2);
-
-    // Display the result
-    document.getElementById('result').innerHTML = `
-        <p><strong>Final Price: $${price.toFixed(2)}</strong></p>
-        <p><strong>Negotiation Options:</strong></p>
-        <ul>
-            <li>Option 1 (
-
+            price -=
 
 
