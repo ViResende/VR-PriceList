@@ -6,6 +6,7 @@ function calculateQuote() {
     const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
     const beds = parseInt(document.getElementById('beds').value) || 0;
     const windows = parseInt(document.getElementById('windows').value) || 0;
+    const livingRoomCount = parseInt(document.getElementById('livingRoomCount').value) || 0;
     const baseboardPrice = parseFloat(document.getElementById('baseboardPrice').value) || 30; // Default is $30
     const extras = Array.from(document.querySelectorAll('#extras input:checked')).map(input => input.value);
     const flatRate = parseFloat(document.getElementById('flatRate').value) || 0;
@@ -32,9 +33,9 @@ function calculateQuote() {
                 case 'kitchenMedium': price += 20; break;
                 case 'kitchenLarge': price += 30; break;
                 case 'kitchenStove': price += 5; break;
-                case 'livingRoomSmall': price += 10; break;
-                case 'livingRoomMedium': price += 20; break;
-                case 'livingRoomLarge': price += 30; break;
+                case 'livingRoomSmall': price += 10 * livingRoomCount; break;
+                case 'livingRoomMedium': price += 20 * livingRoomCount; break;
+                case 'livingRoomLarge': price += 30 * livingRoomCount; break;
                 case 'makeBed': price += beds * 5; break;
                 case 'office': price += 10; break;
                 case 'basement': price += 15; break;
@@ -58,17 +59,5 @@ function calculateQuote() {
         // Adjust for frequency
         if (jobType === "weekly") {
             // No change for weekly
-        } else if (jobType === "biweekly") {
-            price -= 10; // $10 discount for biweekly
-        } else if (jobType === "monthly") {
-            price *= 1.2; // 20% increase for monthly
-        } else if (jobType === "deep") {
-            price *= 2; // Double the price for deep cleaning
-        }
-    }
-
-    // Calculate competitive prices
-    const
-
-
+        } else if (jobType === "biweekly")
 
