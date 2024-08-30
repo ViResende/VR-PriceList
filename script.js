@@ -5,7 +5,7 @@ function calculateQuote() {
     const bedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
     const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
     const beds = parseInt(document.getElementById('beds').value) || 0;
-    const extras = Array.from(document.getElementById('extras').selectedOptions).map(option => option.value);
+    const extras = Array.from(document.querySelectorAll('#extras input:checked')).map(input => input.value);
     const flatRate = parseFloat(document.getElementById('flatRate').value) || 0;
 
     let price = flatRate || 0;
@@ -72,11 +72,7 @@ function calculateQuote() {
         <p><strong>Final Price: $${price.toFixed(2)}</strong></p>
         <p><strong>Negotiation Options:</strong></p>
         <ul>
-            <li>Option 1 (5% discount): $${discount5}</li>
-            <li>Option 2 (10% discount): $${discount10}</li>
-            <li>Option 3 (15% discount): $${discount15}</li>
-        </ul>
-    `;
-}
+            <li>Option 1 (
+
 
 
