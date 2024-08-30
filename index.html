@@ -1,110 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cleaning Service Quote</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+function calculateQuote() {
+    const jobType = document.getElementById('jobType').value;
+    const helpers = parseInt(document.getElementById('helpers').value) || 0;
+    const houseSize = parseInt(document.getElementById('houseSize').value) || 0;
+    const bedrooms = parseInt(document.getElementById('bedrooms').value) || 0;
+    const bathrooms = parseInt(document.getElementById('bathrooms').value) || 0;
+    const beds = parseInt(document.getElementById('beds').value) || 0;
+    const windows = parseInt(document.getElementById('windows').value) || 0;
+    const livingRoomCount = parseInt(document.getElementById('livingRoomCount').value) || 0;
+    const baseboardPrice = parseFloat(document.getElementById('baseboardPrice').value) || 30; // Default is $30
+    const extras = Array.from(document.querySelectorAll('#extras input:checked')).map(input => input.value);
+    const flatRate = parseFloat(document.getElementById('flatRate').value) || 0;
 
-<div class="container">
-    <img id="logo" src="logoVR.png" alt="Company Logo">
-    <h1>Cleaning Service Quote</h1>
-    
-    <label for="jobType">Type of Job:</label>
-    <select id="jobType">
-        <option value="oneTime">One-Time</option>
-        <option value="weekly">Weekly</option>
-        <option value="biweekly">Biweekly</option>
-        <option value="monthly">Monthly</option>
-        <option value="deep">Deep Cleaning</option>
-    </select>
+    let price = 0;
+    let biweeklyPrice = 0;
 
-    <label for="helpers">Number of Helpers:</label>
-    <input type="number" id="helpers" value="0" min="0">
+    if (flatRate) {
+        // If a flat rate is provided, start with that as the base price
+        price = flatRate;
+    } else {
+        // Base rate calculations
+        price += (bedrooms * 25) + (bathrooms * 20) + 30; // Bedrooms, Bathrooms, Kitchen
 
-    <label for="houseSize">Size of House (sq ft):</label>
-    <input type="number" id="houseSize">
+        // Calculate helper cost based on job type
+        let helperCost = 0;
+        if (jobType === 'standard' || jobType === 'oneTime' || jobType === 'weekly' || jobType === 'biweekly' || jobType === 'monthly') {
+            helperCost = 50;
+        } else if (jobType === 'deep') {
+            helperCost = 120;
+        }
+        price += helperCost * helpers;
 
-    <label for="bedrooms">Number of Bedrooms:</label>
-    <input type="number" id="bedrooms">
+        // Add extras
+        extras.forEach(extra => {
+            switch (extra) {
+                case 'kitchenSmall': price += 12; break;
+                case 'kitchenMedium': price += 20; break;
+                case 'kitchenLarge': price += 30; break;
+                case 'kitchenStove': price += 5; break;
+                case 'livingRoomSmall': price += 10 * livingRoomCount; break;
+                case 'livingRoomMedium': price += 20 * livingRoomCount; break;
+                case 'livingRoomLarge': price += 30 * livingRoomCount; break;
+                case 'makeBed': price += beds * 5; break;
+                case 'office': price += 10; break;
+                case 'basement': price += 15; break;
+                case 'onlyCarpet': price += 5; break;
+                case 'ecoFriendly': price += 10; break;
+                case 'pet': price += 5; break;
+                case 'lowDirty': price += 10; break;
+                case 'mediumDirty': price += 20; break;
+                case 'highDirty': price += 30; break;
+                case 'fridge': price += 35; break;
+                case 'oven': price += 40; break;
+                case 'foldLaundry': price += 15; break;
+                case 'washFoldLaundry': price += 25; break;
+                case 'windows': price += 5 * windows; break;
+                case 'baseboards': price += baseboardPrice; break;
+                case 'dustBlinds': price += 20; break;
+                case 'porchSmall': price += 20; break;
+            }
+        });
 
-    <label for="bathrooms">Number of Bathrooms:</label>
-    <input type="number" id="bathrooms">
+        biweeklyPrice = price - 10; // Calculate the biweekly price as the base for adjustments
+    }
 
-    <label for="extras">Extras (Select All That Apply):</label>
-    <div id="extras">
+    // Adjust for job type
+    if (jobType === "monthly") {
+        price = biweeklyPrice * 1.15; // Add 15% more than biweekly
+    } else if (jobType === "oneTime") {
+        price = biweeklyPrice * 1.2; // Add 20% more than biweekly
+    } else if (jobType === "biweekly") {
+        price = biweeklyPrice; // Use the biweekly price directly
+    } else if (jobType === "weekly") {
+        // No additional adjustment needed for weekly
+    } else if (jobType === "deep") {
+        price *= 2; // Double the price for deep cleaning
+    }
 
-        <!-- Kitchen Section -->
-        <label><input type="checkbox" value="kitchenSmall"> Kitchen Small (+$12)</label><br>
-        <label><input type="checkbox" value="kitchenMedium"> Kitchen Medium (+$20)</label><br>
-        <label><input type="checkbox" value="kitchenLarge"> Kitchen Large (+$30)</label><br>
-        <label><input type="checkbox" value="kitchenStove"> Kitchen Stove (Gas/Spiral) (+$5)</label><br>
-        
-        <!-- Living Room/Dining Room Section -->
-        <label><input type="checkbox" value="livingRoomSmall"> Living Room/Dining Room Small (+$10)</label><br>
-        <label><input type="checkbox" value="livingRoomMedium"> Living Room/Dining Room Medium (+$20)</label><br>
-        <label><input type="checkbox" value="livingRoomLarge"> Living Room/Dining Room Large (+$30)</label><br>
-        <input type="number" id="livingRoomCount" placeholder="Number of Living Rooms" min="0"><br>
+    // Calculate competitive prices
+    const discount5 = (price * 0.95).toFixed(2);
+    const discount10 = (price * 0.90).toFixed(2);
+    const discount15 = (price * 0.85).toFixed(2);
 
-        <!-- Bedroom Section -->
-        <label><input type="checkbox" value="makeBed"> Change Sheets (per bed, $5 each)</label><br>
-        <input type="number" id="beds" placeholder="Number of beds" min="0"><br>
+    // Display the result
+    document.getElementById('result').innerHTML = `
+        <p><strong>Final Price: $${price.toFixed(2)}</strong></p>
+        <p><strong>Negotiation Options:</strong></p>
+        <ul>
+            <li>Option 1 (5% discount): $${discount5}</li>
+            <li>Option 2 (10% discount): $${discount10}</li>
+            <li>Option 3 (15% discount): $${discount15}</li>
+        </ul>
+    `;
+}
 
-        <!-- Office Section -->
-        <label><input type="checkbox" value="office"> Office (+$10)</label><br>
-
-        <!-- Basement Section -->
-        <label><input type="checkbox" value="basement"> Basement (+$15)</label><br>
-
-        <!-- Carpet Section -->
-        <label><input type="checkbox" value="onlyCarpet"> Only Carpet (+$5)</label><br>
-
-        <!-- Eco-Friendly Section -->
-        <label><input type="checkbox" value="ecoFriendly"> Eco-Friendly Cleaning (+$10)</label><br>
-
-        <!-- Pet Section -->
-        <label><input type="checkbox" value="pet"> Pet (+$5)</label><br>
-
-        <!-- Dirtiness Level Section -->
-        <label><input type="checkbox" value="lowDirty"> Low Dirtiness (+$10)</label><br>
-        <label><input type="checkbox" value="mediumDirty"> Medium Dirtiness (+$20)</label><br>
-        <label><input type="checkbox" value="highDirty"> High Dirtiness (+$30)</label><br>
-
-        <!-- Appliances Section -->
-        <label><input type="checkbox" value="fridge"> Fridge Interior (+$35)</label><br>
-        <label><input type="checkbox" value="oven"> Oven (+$40)</label><br>
-
-        <!-- Laundry Section -->
-        <label><input type="checkbox" value="foldLaundry"> Laundry (Fold Only) (+$15 per load)</label><br>
-        <label><input type="checkbox" value="washFoldLaundry"> Laundry (Wash & Fold) (+$25 per load)</label><br>
-
-        <!-- Windows Section -->
-        <label><input type="checkbox" value="windows"> Windows (Interior Only) (+$5 per window)</label><br>
-        <input type="number" id="windows" placeholder="Number of windows" min="0"><br>
-
-        <!-- Baseboard Cleaning Section -->
-        <label><input type="checkbox" value="baseboards"> Baseboard Cleaning</label><br>
-        <input type="number" id="baseboardPrice" value="30" min="0"><br>
-
-        <!-- Dust Blinds Section -->
-        <label><input type="checkbox" value="dustBlinds"> Dust Blinds (+$20)</label><br>
-
-        <!-- Porch Section -->
-        <label><input type="checkbox" value="porchSmall"> Porch Small (+$20)</label><br>
-
-    </div>
-
-    <label for="flatRate">Flat Rate (if applicable):</label>
-    <input type="number" id="flatRate" placeholder="Leave empty if not using">
-
-    <button class="button" onclick="calculateQuote()">Calculate Quote</button>
-
-    <div id="result" class="result"></div>
-</div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
